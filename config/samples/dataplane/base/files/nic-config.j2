@@ -29,3 +29,13 @@ network_config:
         {{ lookup('vars', networks_lower[network] ~ '_ip') }}/{{ lookup('vars', networks_lower[network] ~ '_cidr') }}
     routes: {{ lookup('vars', networks_lower[network] ~ '_host_routes') }}
 {% endfor %}
+- type: ovs_bridge
+  name: br-provider1
+  mtu: {{ min_viable_mtu }}
+  use_dhcp: false
+  members:
+  - type: interface
+    name: nic2
+    mtu: {{ min_viable_mtu }}
+    # force the MAC address of the bridge to this interface
+    primary: true
